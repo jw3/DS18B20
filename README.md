@@ -1,4 +1,4 @@
-DS18B20 Reactive Interface
+DS18B20 Interface
 ==========================
 [![Build Status](https://travis-ci.org/jw3/DS18b20.svg?branch=master)](https://travis-ci.org/jw3/DS18B20)
 
