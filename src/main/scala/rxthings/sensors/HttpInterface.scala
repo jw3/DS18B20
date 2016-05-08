@@ -8,6 +8,7 @@ import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Directives._
 import akka.stream.ActorMaterializer
 import akka.stream.scaladsl.Sink
+import com.typesafe.config.{ConfigFactory, Config}
 import rxthings.sensors.DS18B20ReadingModels.ValidDS18B20Reading
 import rxthings.sensors.DS18B20ReadingProtocol._
 import rxthings.webhooks.ActorWebApi
@@ -24,7 +25,9 @@ object HttpInterface {
 class HttpInterface extends Actor with ActorWebApi {
   import HttpInterface._
 
-  override def preStart()= {
+  override def config = Option(ConfigFactory.load)
+
+  override def preStart() = {
     webstart(routes)
   }
 

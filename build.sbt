@@ -17,6 +17,8 @@ libraryDependencies := {
 
     "com.typesafe.akka" %% "akka-actor" % akkaVersion,
     "com.typesafe.akka" %% "akka-stream" % akkaVersion,
+
+    "ch.qos.logback" % "logback-classic" % "1.1.7" % Runtime,
     "com.typesafe.akka" %% "akka-slf4j" % akkaVersion % Runtime,
 
     "org.scalactic" %% "scalactic" % scalatestVersion % Test,
@@ -25,3 +27,9 @@ libraryDependencies := {
     "com.typesafe.akka" %% "akka-stream-testkit" % akkaVersion % Test
   )
 }
+
+enablePlugins(JavaAppPackaging)
+mainClass in Compile := Some("rxthings.sensors.Boot")
+dockerRepository := Some("jwiii")
+dockerBaseImage := "anapsix/alpine-java:jre8"
+dockerExposedPorts := Seq(8080)
