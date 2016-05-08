@@ -4,6 +4,7 @@ import java.nio.file.{Files, Path, Paths}
 
 import akka.stream.scaladsl._
 import akka.util.ByteString
+import rxthings.sensors.DS18B20ReadingModels.{InvalidDS18B20Reading, ValidDS18B20Reading}
 
 
 trait DS18B20Reading {
@@ -34,10 +35,9 @@ object DS18B20Reading {
 
 
 object DS18B20 {
-  def pathForId(id: String): Path = {
+  def pathForId(id: String): Option[Path] = {
     val pathstr = s"/sys/bus/w1/devices/$id/w1_slave"
     val devpath = Paths.get(pathstr)
-    require(Files.exists(devpath), s"$pathstr not found")
-    devpath
+    if (Files.exists(devpath)) Option(devpath) else None
   }
 }

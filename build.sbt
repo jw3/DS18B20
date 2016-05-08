@@ -13,6 +13,8 @@ libraryDependencies := {
   val scalatestVersion = "3.0.0-M15"
 
   Seq(
+    "com.rxthings" %% "webhooks" % "0.5",
+
     "com.typesafe.akka" %% "akka-actor" % akkaVersion,
     "com.typesafe.akka" %% "akka-stream" % akkaVersion,
     "com.typesafe.akka" %% "akka-slf4j" % akkaVersion % Runtime,
