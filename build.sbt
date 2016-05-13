@@ -8,7 +8,7 @@ scalacOptions += "-target:jvm-1.8"
 
 resolvers += "jw3 at bintray" at "https://dl.bintray.com/jw3/maven"
 
-libraryDependencies := {
+libraryDependencies ++= {
   val akkaVersion = "2.4.4"
   val scalatestVersion = "3.0.0-M15"
 
