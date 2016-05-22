@@ -17,6 +17,6 @@ object DS18B20ReadingModels {
 object DS18B20ReadingProtocol extends DefaultJsonProtocol {
   import DS18B20ReadingModels._
 
-  implicit val validFormat: RootJsonFormat[ValidDS18B20Reading] = jsonFormat2(ValidDS18B20Reading)
+  implicit val validFormat: RootJsonFormat[ValidDS18B20Reading] = jsonFormat(ValidDS18B20Reading, "device", "value")
   implicit val invalidFormat: RootJsonFormat[InvalidDS18B20Reading] = jsonFormat1(InvalidDS18B20Reading)
 }
