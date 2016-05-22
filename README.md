@@ -2,6 +2,34 @@ DS18B20 Interface
 ==========================
 [![Build Status](https://travis-ci.org/jw3/DS18b20.svg?branch=master)](https://travis-ci.org/jw3/DS18B20)
 
+Read from DS18B20 using the [`w1-gpio`](https://github.com/raspberrypi/firmware/tree/master/boot/overlays) module
+
+Device is accessible at `/sys/bus/w1/devices/<id>/w1_slave`
+
+
+```
+Name:   w1-gpio
+Info:   Configures the w1-gpio Onewire interface module.
+        Use this overlay if you *don't* need a GPIO to drive an external pullup.
+Load:   dtoverlay=w1-gpio,<param>=<val>
+Params: gpiopin                 GPIO for I/O (default "4")
+
+        pullup                  Non-zero, "on", or "y" to enable the parasitic
+                                power (2-wire, power-on-data) feature
+
+
+Name:   w1-gpio-pullup
+Info:   Configures the w1-gpio Onewire interface module.
+        Use this overlay if you *do* need a GPIO to drive an external pullup.
+Load:   dtoverlay=w1-gpio-pullup,<param>=<val>
+Params: gpiopin                 GPIO for I/O (default "4")
+
+        pullup                  Non-zero, "on", or "y" to enable the parasitic
+                                power (2-wire, power-on-data) feature
+
+        extpullup               GPIO for external pullup (default "5")
+
+```
 
 ## Bugs and Feedback
 
