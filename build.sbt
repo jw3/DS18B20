@@ -31,5 +31,5 @@ libraryDependencies ++= {
 enablePlugins(JavaAppPackaging)
 mainClass in Compile := Some("rxthings.sensors.Boot")
 dockerRepository := Some("jwiii")
-dockerBaseImage := "anapsix/alpine-java:jre8"
+dockerBaseImage := "jwiii/arm-java:8"
 dockerExposedPorts := Seq(8080)
