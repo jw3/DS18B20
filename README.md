@@ -31,6 +31,24 @@ Params: gpiopin                 GPIO for I/O (default "4")
 
 ```
 
+
+Sample of three readings from the sensor
+
+```
+5d 01 4b 46 7f ff 03 10 8c : crc=8c YES
+5d 01 4b 46 7f ff 03 10 8c t=21812
+```
+
+```
+50 05 4b 46 7f ff 0c 10 1c : crc=1c YES
+50 05 4b 46 7f ff 0c 10 1c t=85000
+```
+
+```
+00 00 00 00 00 00 00 00 00 : crc=00 NO
+5d 01 4b 46 7f ff 03 10 8c t=0
+```
+
 ## Bugs and Feedback
 
 For bugs, questions and discussions please use the [Github Issues](https://github.com/jw3/DS18B20/issues).
