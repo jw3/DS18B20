@@ -14,6 +14,7 @@ libraryDependencies ++= {
 
   Seq(
     "com.rxthings" %% "webhooks" % "0.5",
+    "com.github.jw3" %% "pigpio-scala" % "0.1-SNAPSHOT",
 
     "com.typesafe.akka" %% "akka-actor" % akkaVersion,
     "com.typesafe.akka" %% "akka-stream" % akkaVersion,
