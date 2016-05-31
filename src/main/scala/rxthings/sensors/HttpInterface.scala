@@ -1,30 +1,19 @@
 package rxthings.sensors
 
-import java.nio.file.Path
-
-import akka.actor.{Actor, ActorSystem, Props}
+import akka.actor.{Actor, ActorRef, ActorSystem, Props}
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Directives._
-import akka.stream.ActorMaterializer
-import akka.stream.scaladsl.Sink
-import com.typesafe.config.{ConfigFactory, Config}
-import rxthings.sensors.DS18B20ReadingModels.ValidDS18B20Reading
+import com.typesafe.config.ConfigFactory
+import rxthings.sensors.DS18B20._
 import rxthings.sensors.DS18B20ReadingProtocol._
 import rxthings.webhooks.ActorWebApi
 
 object HttpInterface {
-  def apply()(implicit sys: ActorSystem) = sys.actorOf(Props(new HttpInterface))
-
-  def validReading(id: String, p: Path)(implicit sys: ActorSystem, mat: ActorMaterializer) = {
-    import sys.dispatcher
-    DS18B20Reading.fromFile(id, p).runWith(Sink.head).collect { case r: ValidDS18B20Reading => r }
-  }
+  def apply(monitor: ActorRef)(implicit sys: ActorSystem) = sys.actorOf(Props(new HttpInterface(monitor)))
 }
 
-class HttpInterface extends Actor with ActorWebApi {
-  import HttpInterface._
-
+class HttpInterface(monitor: ActorRef) extends Actor with ActorWebApi {
   override def config = Option(ConfigFactory.load)
 
   override def preStart() = {

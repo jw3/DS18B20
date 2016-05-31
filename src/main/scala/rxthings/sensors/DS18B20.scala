@@ -2,6 +2,8 @@ package rxthings.sensors
 
 import java.nio.file.{Files, Path, Paths}
 
+import akka.actor.ActorSystem
+import akka.stream.ActorMaterializer
 import akka.stream.scaladsl._
 import akka.util.ByteString
 import rxthings.sensors.DS18B20ReadingModels.{InvalidDS18B20Reading, ValidDS18B20Reading}
@@ -39,5 +41,10 @@ object DS18B20 {
     val pathstr = s"/sys/bus/w1/devices/$id/w1_slave"
     val devpath = Paths.get(pathstr)
     if (Files.exists(devpath)) Option(devpath) else None
+  }
+
+  def validReading(id: String, p: Path)(implicit sys: ActorSystem, mat: ActorMaterializer) = {
+    import sys.dispatcher
+    DS18B20Reading.fromFile(id, p).runWith(Sink.head).collect { case r: ValidDS18B20Reading => r }
   }
 }
