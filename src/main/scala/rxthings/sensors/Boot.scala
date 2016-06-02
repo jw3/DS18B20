@@ -5,15 +5,14 @@ import java.util.UUID
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
 import com.typesafe.scalalogging.LazyLogging
+import net.ceedubs.ficus.Ficus._
 import pigpio.scaladsl.GpioImplicits._
 import pigpio.scaladsl._
-
-import scala.concurrent.Await
-import scala.concurrent.duration.Duration
-import scala.util.{Failure, Success}
 import rxthings.sensors.DS18B20._
 
-import scala.concurrent.duration.DurationInt
+import scala.concurrent.Await
+import scala.concurrent.duration.{Duration, DurationInt}
+import scala.util.{Failure, Success}
 
 
 object Boot extends App with LazyLogging {
@@ -38,16 +37,19 @@ object Boot extends App with LazyLogging {
    *
    */
   def run(implicit lgpio: PigpioLibrary) = {
-    val relayPin = 3 // from config
-    val relay = SS1982a(GpioPin(relayPin))
+    val config = system.settings.config.getConfig("furnace")
 
-    val monitor = Monitor(relay)
+    val blower = config.as[Int]("pins.blower")
+    val relay = SS1982a(GpioPin(blower))
+
+    val monitor = Monitor(relay, config.getConfig("temp"))
+
     val http = HttpInterface(monitor)
 
-    val id = "___from_config___"
-    pathForId(id).map { dev =>
+    val tid = config.getString("thermostat")
+    pathForId(tid).map { p =>
       import system.dispatcher
-      system.scheduler.schedule(0.seconds, 10.seconds, monitor, validReading("", dev))
+      system.scheduler.schedule(0.seconds, 10.seconds, monitor, validReading(tid, p))
     }
   }
 }
