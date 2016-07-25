@@ -23,13 +23,15 @@ object Boot extends App with LazyLogging {
   DefaultInitializer.gpioInitialise() match {
     case Success(Init(lib, ver)) =>
       logger.debug("initialized pigpio V{}", ver.toString)
-      logger.debug("starting application")
       run(lib)
 
-    case Failure(ex) => system.terminate()
+    case Failure(ex) =>
+      logger.error("failed to initialize pigpio", ex)
+      system.terminate()
   }
 
   Await.ready(system.whenTerminated, Duration.Inf)
+  logger.debug("application terminating")
   DefaultInitializer.gpioTerminate()
 
 
@@ -37,19 +39,32 @@ object Boot extends App with LazyLogging {
    *
    */
   def run(implicit lgpio: PigpioLibrary) = {
+    logger.debug("starting application")
     val config = system.settings.config.getConfig("furnace")
 
     val blower = config.as[Int]("pins.blower")
-    val relay = SS1982a(GpioPin(blower))
+    logger.debug("assigning blower pin #{}", blower.toString)
+
+    val blowerPin = GpioPin(blower)
+    blowerPin ! OutputPin
+    
+    val relay = SS1982a(blowerPin)
 
     val monitor = Monitor(relay, config.getConfig("temp"))
 
     val http = HttpInterface(monitor)
 
     val tid = config.getString("thermostat")
+    logger.debug("thermostat id [{}]", tid)
+
     pathForId(tid).map { p =>
+      logger.debug("thermostat device [{}]", p)
+
+      val interval = 10.seconds
+      logger.debug("scheduling thermostat reading every {}", interval)
+
       import system.dispatcher
-      system.scheduler.schedule(0.seconds, 10.seconds, monitor, validReading(tid, p))
+      system.scheduler.schedule(0.seconds, interval, monitor, ScheduleReading(tid, p))
     }
   }
 }

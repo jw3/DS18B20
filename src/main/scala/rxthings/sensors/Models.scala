@@ -1,7 +1,10 @@
 package rxthings.sensors
 
+import java.nio.file.Path
+
 import spray.json.{DefaultJsonProtocol, RootJsonFormat}
 
+case class ScheduleReading(id: String, path: Path)
 
 object DS18B20ReadingModels {
   case class ValidDS18B20Reading(device: String, value: Int) extends DS18B20Reading {
