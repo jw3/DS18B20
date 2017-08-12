@@ -4,10 +4,9 @@ import java.util.UUID
 
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
+import com.sun.org.apache.xml.internal.security.Init
 import com.typesafe.scalalogging.LazyLogging
 import net.ceedubs.ficus.Ficus._
-import pigpio.scaladsl.GpioImplicits._
-import pigpio.scaladsl._
 import rxthings.sensors.DS18B20._
 
 import scala.concurrent.Await
