@@ -49,6 +49,24 @@ Sample of three readings from the sensor
 5d 01 4b 46 7f ff 03 10 8c t=0
 ```
 
+
+## Device
+
+Developed using a Vktech DS18b20.
+
+Power with 3.0v-5.5v, use a 4.7k ohm pull-up between signal and +5 volts.
+
+### pins
+
+- vcc: red
+- ground: black 
+- data: yellow
+
+### reference
+
+- https://www.hacktronics.com/Tutorials/arduino-1-wire-tutorial.html
+- http://datasheets.maximintegrated.com/en/ds/DS18B20.pdf
+
 ## Bugs and Feedback
 
 For bugs, questions and discussions please use the [Github Issues](https://github.com/jw3/DS18B20/issues).
